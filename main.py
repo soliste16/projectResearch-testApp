@@ -38,17 +38,18 @@ app.add_middleware(
 
 # eyetracker = tr.find_all_eyetrackers()[0]
 
-class MkdirParam(BaseModel):
-    number: str
+class TestParam(BaseModel):
+    message: str
 
 
-@app.post("/api/mkdir")
-def mkdir(param: MkdirParam):
-    global userNumber
+@app.post("/api/test")
+def mkdir(param: TestParam):
+    print("test")
 
-    userNumber = param.number
-    os.mkdir('./public/userData/' + str(userNumber))
-    os.mkdir('./public/userData/' + str(userNumber) + '/gaze')
-    os.mkdir('./public/userData/' + str(userNumber) + '/stroke')
-    os.mkdir('./public/userData/' + str(userNumber) + '/img')
-    os.mkdir('./public/userData/' + str(userNumber) + '/questionnaire')
+@app.post("/api/start")
+def start(param: TestParam):
+    print("start")
+
+@app.post("/api/stop")
+def stop(param: TestParam):
+    print("stop")

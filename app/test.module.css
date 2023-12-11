@@ -1,0 +1,85 @@
+.test .main {
+  width: 1000px;
+  margin: 0 auto;
+}
+
+.test .container {
+  margin: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.test .questionWrapper {
+  width: 800px;
+  margin: 0 auto;
+  border: 1px solid #000;
+  padding: 1rem 2rem;
+}
+
+.test .center {
+  text-align: center;
+}
+
+.test .optionWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 50px 0;
+}
+
+.test .optionWrapper>div[selected="true"] {
+  background-color: #000;
+  color: #fff;
+}
+
+.test .optionWrapper>div {
+  width: 500px;
+  height: 50px;
+  border: 1px solid #000;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+  cursor: pointer;
+}
+
+.test .submit {
+  width: 800px;
+  display: flex;
+  justify-content: end;
+}
+
+.test .submit a {
+  width: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #000;
+  text-align: center;
+  color: black;
+  text-decoration: none;
+  transition: .3s;
+}
+
+.test .submit a:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+.test .page2 .contentWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+
+.test .page2 .questionWrapper {
+  width: 350px;
+  margin: 50px 0;
+}
