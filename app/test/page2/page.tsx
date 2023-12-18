@@ -44,16 +44,12 @@ const Test2 = () => {
 }
 
 async function startEyeTracker() {
-  await fetch('http://127.0.0.1:8000/api/start', {
-    credentials: 'include',
+  await fetch('http://127.0.0.1:8000/api/start2', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin' : 'http://127.0.0.1:8000',
-      'Access-Control-Allow-Credentials': 'true',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
     },
-    body: JSON.stringify({ message: "start_first" })
+    body: JSON.stringify({})
   })
     .then(async (res) => {
       const response = await res.json()
@@ -64,19 +60,14 @@ async function startEyeTracker() {
 }
 
 async function endEyeTracker() {
-  await fetch('http://127.0.0.1:8000/api/end', {
-    credentials: 'include',
+  await fetch('http://127.0.0.1:8000/api/stop', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin' : 'http://127.0.0.1:8000',
-      'Access-Control-Allow-Credentials': 'true',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
     },
-    body: JSON.stringify({ message: "end_first" })
+    body: JSON.stringify({})
   })
-    .then(async (res) => {
-      const response = await res.json()
+    .then((res) => {
     })
     .catch((reason) => {
       console.log(reason)

@@ -42,10 +42,10 @@ def unsubscribe(id):
         print("saved")
     print("Unsubscribed from eyetracker")
 
-def gaze_data_callback(gaze_data):
-    """ 視線データのコールバック関数 """
-    datas.append(gaze_data)
-    print(datas)  # ここで視線データを処理
+# def gaze_data_callback(gaze_data):
+#     """ 視線データのコールバック関数 """
+#     datas.append(gaze_data)
+#     print(datas)  # ここで視線データを処理
 
 
 app = FastAPI()
@@ -86,35 +86,46 @@ def gaze_data_callback(gaze_data):
     datas.append(data)
     print(data)
 
-@app.options("/api/start")
-def options_start():
-    return JSONResponse(content={}, status_code=200)
+# @app.options("/api/start")
+# def options_start():
+#     return JSONResponse(content={}, status_code=200)
 
-@app.post("/api/start")
-def start(param: TestParam):
+@app.post("/api/start1")
+def start1():
     print("start")
     datas=[]
     with open("id.txt") as f:
         id = int(f.read())
-    path = './userData/' + str(id)
-    if(param['message']=="start_first"):
-        os.mkdir(path)
-        path=path+'/first'
-        os.mkdir(path)
-    else:
-        path=path+'/second'
-        os.mkdir(path)
+    print(id)
+    global path
+    path = 'userData/' + str(id)
+    os.mkdir(path)
+    path=path+'/first'
+    os.mkdir(path)
     eyetracker.subscribe_to(tr.EYETRACKER_GAZE_DATA, gaze_data_callback, as_dictionary=True)
     print("Subscribed to eyetracker")
 
-@app.options("/api/stop")
-def options_stop():
-    return JSONResponse(content={}, status_code=200)
+@app.post("/api/start2")
+def start2():
+    print("start")
+    datas=[]
+    with open("id.txt") as f:
+        id = int(f.read())
+
+    global path
+    path = './userData/' + str(id)
+
+    path=path+'/second'
+    os.mkdir(path)
+    eyetracker.subscribe_to(tr.EYETRACKER_GAZE_DATA, gaze_data_callback, as_dictionary=True)
+    print("Subscribed to eyetracker")
 
 @app.post("/api/stop")
-def stop(param: TestParam):
+def stop():
     print("stop")
     eyetracker.unsubscribe_from(tr.EYETRACKER_GAZE_DATA, gaze_data_callback)
+    global path
+
     with open(path+'/data.json', 'w') as f:
         json_object=json.dumps(datas,indent=4)
         f.write(json_object)
