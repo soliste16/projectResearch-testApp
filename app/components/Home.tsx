@@ -8,8 +8,8 @@ const Home = () => (
         <div id={styles.description}>
             {/*<Link className={styles.start} to="/">Start</Link>
             */}
-            <Link  href="/" passHref legacyBehavior>
-                <a className={styles.start} >Start</a>
+            <Link  href="../test/page1" passHref legacyBehavior>
+                <a className={styles.start} >スタート</a>
             </Link>
         </div>
     </main>

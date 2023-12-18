@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from typing import List
 from starlette.middleware.cors import CORSMiddleware
-#import TobiiProSDK.tobii_research as tr
+import tobii_research as tr
 import time
 import json
 import base64
@@ -25,31 +25,100 @@ import itertools
 
 import asyncio
 from sse_starlette.sse import EventSourceResponse
+datas=[]
+id=-1
+path=""
+
+def subscribe():
+    datas=[]
+    eyetracker.subscribe_to(tr.EYETRACKER_GAZE_DATA, gaze_data_callback, as_dictionary=True)
+    print("Subscribed to eyetracker")
+
+def unsubscribe(id):
+    eyetracker.unsubscribe_from(tr.EYETRACKER_GAZE_DATA, gaze_data_callback)
+    with open("data.txt", 'w') as f:
+        for data in datas:
+            f.write(str(data))
+        print("saved")
+    print("Unsubscribed from eyetracker")
+
+def gaze_data_callback(gaze_data):
+    """ 視線データのコールバック関数 """
+    datas.append(gaze_data)
+    print(datas)  # ここで視線データを処理
+
 
 app = FastAPI()
 
+origins= [
+    "http://localhost",
+    "http://localhost:3000"
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['*'],
+    allow_origins=["*"],#origins,
     allow_credentials=True,
-    allow_methods=['*'],
-    allow_headers=['*']
+    allow_methods=["*"],#['GET', 'POST', 'OPTIONS'],
+    allow_headers=["*"]#['Content-Type', 'Authorization']
 )
 
-# eyetracker = tr.find_all_eyetrackers()[0]
+id=-1
+eyetracker = tr.find_all_eyetrackers()[0]
 
 class TestParam(BaseModel):
     message: str
 
+def gaze_data_callback(gaze_data):
+    data = {
+        "l_g": gaze_data['left_gaze_point_on_display_area'],
+        "l_p": gaze_data['left_pupil_diameter'],
+        "r_g": gaze_data['right_gaze_point_on_display_area'],
+        "r_p": gaze_data['right_pupil_diameter'],
+        "v": [
+            gaze_data['left_gaze_point_validity'],
+            gaze_data['left_pupil_validity'],
+            gaze_data['right_gaze_point_validity'],
+            gaze_data['right_pupil_validity']
+        ],
+        "t": time.time()
+    }
+    datas.append(data)
+    print(data)
 
-@app.post("/api/test")
-def mkdir(param: TestParam):
-    print("test")
+@app.options("/api/start")
+def options_start():
+    return JSONResponse(content={}, status_code=200)
 
 @app.post("/api/start")
 def start(param: TestParam):
     print("start")
+    datas=[]
+    with open("id.txt") as f:
+        id = int(f.read())
+    path = './userData/' + str(id)
+    if(param['message']=="start_first"):
+        os.mkdir(path)
+        path=path+'/first'
+        os.mkdir(path)
+    else:
+        path=path+'/second'
+        os.mkdir(path)
+    eyetracker.subscribe_to(tr.EYETRACKER_GAZE_DATA, gaze_data_callback, as_dictionary=True)
+    print("Subscribed to eyetracker")
+
+@app.options("/api/stop")
+def options_stop():
+    return JSONResponse(content={}, status_code=200)
 
 @app.post("/api/stop")
 def stop(param: TestParam):
     print("stop")
+    eyetracker.unsubscribe_from(tr.EYETRACKER_GAZE_DATA, gaze_data_callback)
+    with open(path+'/data.json', 'w') as f:
+        json_object=json.dumps(datas,indent=4)
+        f.write(json_object)
+        print("saved")
+    print("Unsubscribed from eyetracker")
+
+

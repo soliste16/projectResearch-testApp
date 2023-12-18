@@ -6,9 +6,10 @@ function App() {
   return (
     <div>
         <nav>
-            <Link href="/">
+            {/*<Link href="/">
                 Home
-            </Link>
+  </Link>*/}
+          Welcome!
         </nav>
       {/*<Route path="/questionnaire" element={<Questions />} />
       */}
