@@ -51,7 +51,7 @@
 .test .submit {
   width: 800px;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .test .submit a {
@@ -73,13 +73,14 @@
   color: #fff;
 }
 
-.test .page2 .contentWrapper {
+.test .horizontal .contentWrapper {
   display: flex;
   flex-direction: row;
   gap: 30px;
 }
 
-.test .page2 .questionWrapper {
-  width: 350px;
+.test .horizontal .questionWrapper {
+  
   margin: 50px 0;
 }
+

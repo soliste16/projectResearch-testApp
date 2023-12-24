@@ -25,13 +25,13 @@ const Test = () => {
         <div className={styles.contentWrapper}>
           <div className={styles.questionWrapper}>
             <h1 className={styles.center}>Problem1</h1>
-            <p className={styles.center}>3+8=?</p>
+            <p className={styles.center}>question text</p>
           </div>
           <div className={styles.optionWrapper}>
-            <div onClick={handleOption}>10</div>
-            <div onClick={handleOption}>9</div>
-            <div onClick={handleOption}>11</div>
-            <div onClick={handleOption}>13</div>
+            <div onClick={handleOption}>option1</div>
+            <div onClick={handleOption}>option2</div>
+            <div onClick={handleOption}>option3</div>
+            <div onClick={handleOption}>option4</div>
           </div>
         </div>
         <div className={styles.submit}>
@@ -48,7 +48,7 @@ async function startEyeTracker() {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({"message":"/ver1"})
+    body: JSON.stringify({"message":"/ver2"})
   })
     .then(async (res) => {
       const response = await res.json()

@@ -91,41 +91,49 @@ def gaze_data_callback(gaze_data):
 #     return JSONResponse(content={}, status_code=200)
 
 @app.post("/api/start1")
-def start1():
+def start1(param : TestParam):
     print("start")
     datas=[]
     with open("id.txt") as f:
-        id = int(f.read())
+        id = int(f.read()) + 1
     print(id)
+    with open("id.txt","w") as f:
+        f.write(str(id))
     global path
     path = 'userData/' + str(id)
     os.mkdir(path)
+    path=path+param.message
+    os.mkdir(path)
     path=path+'/first'
     os.mkdir(path)
+    with open("id.txt","w") as f:
+        f.write(str(id))
     eyetracker.subscribe_to(tr.EYETRACKER_GAZE_DATA, gaze_data_callback, as_dictionary=True)
     print("Subscribed to eyetracker")
 
 @app.post("/api/start2")
-def start2():
+def start2(param : TestParam):
     print("start")
     datas=[]
     with open("id.txt") as f:
         id = int(f.read())
 
     global path
-    path = './userData/' + str(id)
+    #path = './userData/' + str(id)
 
-    path=path+'/second'
+    #path=path+param.message#'/second'
+    path=path+"/.."
+    path=path+param.message
     os.mkdir(path)
     eyetracker.subscribe_to(tr.EYETRACKER_GAZE_DATA, gaze_data_callback, as_dictionary=True)
     print("Subscribed to eyetracker")
+
 
 @app.post("/api/stop")
 def stop():
     print("stop")
     eyetracker.unsubscribe_from(tr.EYETRACKER_GAZE_DATA, gaze_data_callback)
     global path
-
     with open(path+'/data.json', 'w') as f:
         json_object=json.dumps(datas,indent=4)
         f.write(json_object)
