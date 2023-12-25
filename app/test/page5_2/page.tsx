@@ -25,7 +25,7 @@ const Test2 = () => {
       <div className={styles.container}>
         <div className={styles.contentWrapper}>
           <div className={styles.questionWrapper}>
-            <h1 className={styles.center}>Question2</h1>
+            <h1 className={styles.center}>Question5</h1>
             <p className={styles.center}>question text</p>
           </div>
           <div className={styles.optionWrapper}>
